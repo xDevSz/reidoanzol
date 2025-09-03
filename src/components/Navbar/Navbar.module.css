@@ -1,0 +1,49 @@
+.navbar {
+  background-color: #ffffff; /* Fundo branco */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Sombra sutil para dar elevação */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky; /* Opcional: faz o menu ficar fixo no topo ao rolar */
+  top: 0;
+  z-index: 1000;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333333; /* Cor do texto escura */
+  text-decoration: none;
+}
+
+.logo {
+  height: 40px;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navList a {
+  color: #555555; /* Cor dos links um pouco mais suave */
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent; /* Efeito para o hover */
+  transition: all 0.2s ease-in-out;
+}
+
+.navList a:hover {
+  color: #0073a6; /* Link fica AZUL ao passar o mouse */
+  border-bottom-color: #0073a6; /* Borda inferior aparece ao passar o mouse */
+}

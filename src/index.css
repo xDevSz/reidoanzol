@@ -1,0 +1,21 @@
+/* Definindo a nova fonte e o tema base para todo o site */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif; /* Nova fonte aplicada */
+  background-color: #ffffff; /* Fundo branco */
+  color: #333333; /* Texto principal em cinza escuro, mais suave que preto puro */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Garante que o layout ocupe 100% da altura para o footer funcionar */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Um estilo para o conteúdo principal empurrar o footer para baixo */
+.content-wrap {
+  flex: 1;
+}

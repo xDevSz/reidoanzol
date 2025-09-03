@@ -1,0 +1,19 @@
+.footer {
+  background-color: #ffffff; /* Fundo branco */
+  color: #555555; /* Texto cinza escuro */
+  text-align: center;
+  padding: 2.5rem;
+  margin-top: 3rem;
+  /* Linha superior para separar do conteúdo da página */
+  border-top: 1px solid #eeeeee;
+}
+
+.footer p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.footer span {
+  color: #0073a6; /* Destaque em AZUL, que tem bom contraste com o branco */
+  font-weight: bold;
+}
