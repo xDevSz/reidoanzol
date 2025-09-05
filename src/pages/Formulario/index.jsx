@@ -97,56 +97,28 @@ function FormularioPage() {
       return;
     }
 
-    // Código desativado para testes. Para ativar, remova os comentários.
-    // try {
-    //   const response = await fetch("http://localhost:3001/api/register", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(formData),
-    //   });
-
-    //   const data = await response.json();
-    //   if (data.success) {
-    //     setSuccessMsg(`✅ Cadastro realizado! Código da equipe: ${data.invite_code}`);
-    //     setIsModalOpen(true);
-    //     setFormData({
-    //       email: "",
-    //       password: "",
-    //       fullName: "",
-    //       cpf: "",
-    //       birthdate: "",
-    //       address: "",
-    //       city: "",
-    //       uf: "",
-    //       cep: "",
-    //       membros: [{ nome: "", birthdate: "", cpf: "" }],
-    //       consent: false,
-    //     });
-    //   } else {
-    //     setErrorMsg(data.error || "Ocorreu um erro desconhecido.");
-    //   }
-    // } catch (err) {
-    //   setErrorMsg("❌ Falha na conexão: Verifique se o servidor está online.");
-    // } finally {
-    //   setLoading(false);
-    // }
-
-    // Simulação de sucesso para testes com o envio desativado
-    setSuccessMsg("✅ Envio de Inscrição será Disponibilizado em breve!");
+    setSuccessMsg("✅ Envio de dados desativado para testes.");
     setIsModalOpen(true);
     setLoading(false);
   };
 
   return (
+    <>
+    <main className={styles.formContainer} style={{textAlign: 'center', padding: '50px', fontSize: '24px'}}>
+      As Inscrições Estarão Disponíveis em Breve!
+      </main>
+    </>
+    // Para comentar o JSX, você deve usar o formato de comentário do JavaScript
+    // { /* ... todo o seu código JSX */ }
+    // Este código não será renderizado
+    /*
     <main className={styles.formContainer}>
-      <title>Formulário de Cadastro - Minha Equipe</title>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formHeader}>
           <h1>Criar Conta / Equipe</h1>
           {errorMsg && <p className={styles.error}>{errorMsg}</p>}
         </div>
 
-        {/* --- Informações de Acesso --- */}
         <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Informações de Acesso</legend>
           <div className={styles.inputGroup}>
@@ -177,7 +149,6 @@ function FormularioPage() {
           </div>
         </fieldset>
 
-        {/* --- Dados Pessoais --- */}
         <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Dados Pessoais</legend>
           <div className={styles.inputGroup}>
@@ -220,7 +191,6 @@ function FormularioPage() {
           </div>
         </fieldset>
 
-        {/* --- Endereço --- */}
         <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Endereço</legend>
           <div className={styles.inputGroup}>
@@ -280,7 +250,6 @@ function FormularioPage() {
           </div>
         </fieldset>
 
-        {/* --- Membros da Equipe --- */}
         <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Novos Membros da Equipe</legend>
           {formData.membros.map((membro, index) => (
@@ -335,7 +304,6 @@ function FormularioPage() {
           )}
         </fieldset>
 
-        {/* --- Consentimento --- */}
         <div className={styles.checkboxContainer}>
           <label className={styles.checkboxLabel}>
             <input
@@ -354,7 +322,6 @@ function FormularioPage() {
         </button>
       </form>
 
-      {/* --- Modal de sucesso --- */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Cadastro realizado!">
         <p>{successMsg}</p>
         <button
@@ -373,6 +340,7 @@ function FormularioPage() {
         </button>
       </Modal>
     </main>
+    */
   );
 }
 

@@ -30,7 +30,7 @@ function Navbar() {
       <ul className={`${styles.navList} ${isOpen ? styles.active : ''}`}>
         <li><Link to="/" className={styles.navButton} onClick={toggleMenu}>Inicio</Link></li>
         <li><Link to="/sobre" className={styles.navButton} onClick={toggleMenu}>Sobre</Link></li>
-        <li><Link to="/contato" className={`${styles.navButton} ${styles.subscribeButton}`} onClick={toggleMenu}>Inscreva-se</Link></li>
+        <li><Link to="/" className={`${styles.navButton} ${styles.subscribeButton}`} onClick={toggleMenu}>Inscreva-se</Link></li>
       </ul>
     </nav>
   );

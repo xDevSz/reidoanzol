@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import Footer from './components/Footer'; 
-import FormularioPage from './pages/Formulario';
+//import FormularioPage from './pages/Formulario';
 
 function App() {
   return (
