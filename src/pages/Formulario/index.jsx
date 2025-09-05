@@ -1,139 +1,177 @@
-// src/components/Formulario/index.jsx
+import { useState } from "react";
+import styles from "./Formulario.module.css";
 
-import { useState } from 'react';
-import styles from './Formulario.module.css';
+// Utilitário para formatar CPF
+const formatCPF = (value) => {
+  if (!value) return "";
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+    .replace(/(-\d{2})\d+?$/, "$1");
+};
 
 function FormularioPage() {
-  // Estado inicial do formulário
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    fullName: '',
-    cpf: '',
-    rg: '',
-    birthdate: '',
-    phone: '',
-    address: '',
-    city: '',
-    uf: '',
-    cep: '',
-    membros: [
-      { nome: '', birthdate: '', cpf: '' },
-      { nome: '', birthdate: '', cpf: '' },
-      { nome: '', birthdate: '', cpf: '' },
-    ],
-    consent: false, // <-- novo campo para a checkbox
+    email: "",
+    password: "",
+    fullName: "",
+    cpf: "",
+    birthdate: "",
+    address: "",
+    city: "",
+    uf: "",
+    cep: "",
+    membros: [{ nome: "", birthdate: "", cpf: "" }],
+    consent: false,
   });
 
-  // Função genérica para inputs comuns
-  const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  // Máscara CPF
-  const formatCPF = (value) => {
-    if (!value) return '';
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
-  };
-
-  // Handle CPF principal
-  const handleCPFChange = (event) => {
-    const formatted = formatCPF(event.target.value);
+  const handleCPFChange = (e) => {
+    const formatted = formatCPF(e.target.value);
     setFormData((prev) => ({ ...prev, cpf: formatted }));
   };
 
-  // Handle CPF dos membros
-  const handleMembroCPFChange = (index, value) => {
-    const formatted = formatCPF(value);
-    setFormData((prev) => {
-      const newMembros = [...prev.membros];
-      newMembros[index].cpf = formatted;
-      return { ...prev, membros: newMembros };
-    });
+  const handleCEPChange = (e) => {
+    const value = e.target.value.replace(/\D/g, "").slice(0, 8);
+    setFormData((prev) => ({ ...prev, cep: value }));
   };
 
-  // Handle campos dos membros (nome e data)
+  const handleUFChange = (e) => {
+    const value = e.target.value.toUpperCase().slice(0, 2);
+    setFormData((prev) => ({ ...prev, uf: value }));
+  };
+
   const handleMembroChange = (index, field, value) => {
-    setFormData((prev) => {
-      const newMembros = [...prev.membros];
-      newMembros[index][field] = value;
-      return { ...prev, membros: newMembros };
-    });
+    const newMembros = [...formData.membros];
+    newMembros[index][field] =
+      field === "cpf" ? formatCPF(value) : value;
+    setFormData((prev) => ({ ...prev, membros: newMembros }));
   };
 
-  // Envio do formulário
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const addMembro = () => {
+    if (formData.membros.length < 3) {
+      setFormData((prev) => ({
+        ...prev,
+        membros: [...prev.membros, { nome: "", birthdate: "", cpf: "" }],
+      }));
+    }
+  };
+
+  const removeMembro = (index) => {
+    const newMembros = formData.membros.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, membros: newMembros }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+    setSuccessMsg("");
 
     if (!formData.consent) {
-      alert("Você precisa autorizar o uso dos seus dados para continuar.");
+      setErrorMsg("Você precisa autorizar o uso dos seus dados.");
+      setLoading(false);
       return;
     }
 
-    console.log("Dados do formulário:", formData);
-    alert("Formulário enviado!");
-  };
+    try {
+      const response = await fetch("http://localhost:3001/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
+      const data = await response.json();
+      if (data.success) {
+        setSuccessMsg(`✅ Cadastro realizado! Código da equipe: ${data.invite_code}`);
+        setFormData({
+          email: "",
+          password: "",
+          fullName: "",
+          cpf: "",
+          birthdate: "",
+          address: "",
+          city: "",
+          uf: "",
+          cep: "",
+          membros: [{ nome: "", birthdate: "", cpf: "" }],
+        });
+      } else {
+        setErrorMsg(data.error || "Ocorreu um erro desconhecido.");
+      }
+    } catch (err) {
+      setErrorMsg("❌ Falha na conexão: Verifique se o servidor está online.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <main className={styles.formContainer}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formHeader}>
-          <h1>Criar Conta</h1>
+          <h1>Criar Conta / Equipe</h1>
+          {/* ✅ Exibição de mensagens de feedback */}
+          {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+          {successMsg && <p className={styles.success}>{successMsg}</p>}
         </div>
 
-        {/* --- Seção de Informações de Acesso --- */}
-        <fieldset className={styles.fieldset}>
+        {/* --- Informações de Acesso --- */}
+        <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Informações de Acesso</legend>
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
               <span className={styles.icon}>✉️</span>
-              <input 
-                type="email" 
-                name="email" 
+              <input
+                type="email"
+                name="email"
+                placeholder="Seu melhor email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="Seu melhor email" 
-                required 
+                required
               />
             </div>
           </div>
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
               <span className={styles.icon}>🔒</span>
-              <input 
-                type="password" 
-                name="password" 
+              <input
+                type="password"
+                name="password"
+                placeholder="Crie uma senha forte"
                 value={formData.password}
                 onChange={handleInputChange}
-                placeholder="Crie uma senha forte" 
-                required 
+                required
               />
             </div>
           </div>
         </fieldset>
 
-        {/* --- Seção de Dados Pessoais --- */}
-        <fieldset className={styles.fieldset}>
+        {/* --- Dados Pessoais --- */}
+        <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Dados Pessoais</legend>
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
               <span className={styles.icon}>👤</span>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="fullName"
+                placeholder="Nome completo"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="Nome completo" 
-                required 
+                required
               />
             </div>
           </div>
@@ -152,57 +190,31 @@ function FormularioPage() {
           </div>
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
-              <span className={styles.icon}>📁</span>
-              <input
-                type="text"
-                name="rg"
-                value={formData.rg}
-                onChange={handleInputChange}
-                placeholder="RG"
-                required
-              />
-            </div>
-          </div>
-          <div className={styles.inputGroup}>
-            <div className={styles.inputWithIcon}>
               <span className={styles.icon}>🗓️</span>
-              <input 
-                type="date" 
-                name="birthdate" 
-                value={formData.birthdate} 
-                onChange={handleInputChange} 
-                required 
-              />
-            </div>
-          </div>
-          <div className={styles.inputGroup}>
-            <div className={styles.inputWithIcon}>
-              <span className={styles.icon}>📞</span>
-              <input 
-                type="tel" 
-                name="phone" 
-                value={formData.phone}
+              <input
+                type="date"
+                name="birthdate"
+                value={formData.birthdate}
                 onChange={handleInputChange}
-                placeholder="Telefone" 
-                required 
+                required
               />
             </div>
           </div>
         </fieldset>
 
-        {/* --- Seção de Endereço --- */}
-        <fieldset className={styles.fieldset}>
+        {/* --- Endereço --- */}
+        <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Endereço</legend>
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
               <span className={styles.icon}>📍</span>
-              <input 
-                type="text" 
-                name="address" 
+              <input
+                type="text"
+                name="address"
+                placeholder="Endereço (Rua, Nº, Bairro)"
                 value={formData.address}
                 onChange={handleInputChange}
-                placeholder="Endereço (Rua, Nº, Bairro)" 
-                required 
+                required
               />
             </div>
           </div>
@@ -210,26 +222,27 @@ function FormularioPage() {
             <div className={styles.inputGroup}>
               <div className={styles.inputWithIcon}>
                 <span className={styles.icon}>🏙️</span>
-                <input 
-                  type="text" 
-                  name="city" 
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="Cidade"
                   value={formData.city}
                   onChange={handleInputChange}
-                  placeholder="Cidade" 
-                  required 
+                  required
                 />
               </div>
             </div>
             <div className={styles.inputGroup}>
               <div className={styles.inputWithIcon}>
                 <span className={styles.icon}>🗺️</span>
-                <input 
-                  type="text" 
-                  name="uf" 
+                <input
+                  type="text"
+                  name="uf"
+                  placeholder="UF"
                   value={formData.uf}
                   onChange={handleInputChange}
-                  placeholder="UF" 
-                  required 
+                  required
+                  maxLength={2}
                 />
               </div>
             </div>
@@ -237,20 +250,20 @@ function FormularioPage() {
           <div className={styles.inputGroup}>
             <div className={styles.inputWithIcon}>
               <span className={styles.icon}>🌐</span>
-              <input 
-                type="text" 
-                name="cep" 
+              <input
+                type="text"
+                name="cep"
+                placeholder="CEP"
                 value={formData.cep}
                 onChange={handleInputChange}
-                placeholder="CEP" 
-                required 
+                required
               />
             </div>
           </div>
         </fieldset>
 
-        {/* --- Seção de Novos Membros --- */}
-        <fieldset className={styles.fieldset}>
+        {/* --- Membros da Equipe --- */}
+        <fieldset className={styles.fieldset} disabled={loading}>
           <legend>Novos Membros da Equipe</legend>
           {formData.membros.map((membro, index) => (
             <div key={index} className={styles.inputRow}>
@@ -261,7 +274,7 @@ function FormularioPage() {
                     type="text"
                     placeholder={`Nome do Membro ${index + 1}`}
                     value={membro.nome}
-                    onChange={(e) => handleMembroChange(index, 'nome', e.target.value)}
+                    onChange={(e) => handleMembroChange(index, "nome", e.target.value)}
                   />
                 </div>
               </div>
@@ -271,7 +284,7 @@ function FormularioPage() {
                   <input
                     type="date"
                     value={membro.birthdate}
-                    onChange={(e) => handleMembroChange(index, 'birthdate', e.target.value)}
+                    onChange={(e) => handleMembroChange(index, "birthdate", e.target.value)}
                   />
                 </div>
               </div>
@@ -286,12 +299,40 @@ function FormularioPage() {
                   />
                 </div>
               </div>
+              {formData.membros.length > 1 && (
+                <button
+                  type="button"
+                  className={styles.memberButton}
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      membros: prev.membros.filter((_, i) => i !== index),
+                    }));
+                  }}
+                >
+                  ❌ Remover
+                </button>
+              )}
             </div>
           ))}
+          {formData.membros.length < 3 && (
+            <button
+              type="button"
+              className={styles.memberButton}
+              onClick={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  membros: [...prev.membros, { nome: "", birthdate: "", cpf: "" }],
+                }))
+              }
+            >
+              ➕ Adicionar Membro
+            </button>
+          )}
         </fieldset>
 
-        {/* --- Checkbox de consentimento --- */}
-        <div className={styles.inputGroup}>
+        {/* --- Consentimento --- */}
+        <div className={styles.checkboxContainer}>
           <label className={styles.checkboxLabel}>
             <input
               type="checkbox"
@@ -304,8 +345,8 @@ function FormularioPage() {
           </label>
         </div>
 
-        <button type="submit" className={styles.submitButton}>
-          FINALIZAR CADASTRO
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+          {loading ? "SALVANDO..." : "FINALIZAR CADASTRO"}
         </button>
       </form>
     </main>

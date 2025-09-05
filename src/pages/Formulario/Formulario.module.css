@@ -124,3 +124,53 @@
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
 }
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* espaço entre checkbox e texto */
+  margin-top: 1rem;
+}
+.memberButton {
+  background-color: #0073a6; /* Azul suave para contraste */
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.memberButton:hover {
+  background-color: #005f87;
+  transform: translateY(-2px);
+}
+
+/* Checkbox estilizado */
+/* Container da checkbox para garantir visibilidade */
+.checkboxContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Label da checkbox */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Input da checkbox */
+.checkboxLabel input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #00a651; /* Verde do submit */
+  cursor: pointer;
+  margin: 0; /* Remove margem extra */
+}
