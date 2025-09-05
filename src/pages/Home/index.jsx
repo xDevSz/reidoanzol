@@ -13,6 +13,7 @@ import pesca4 from '../../assets/pesca4.jpeg';
 function HomePage() {
   return (
     <main className={styles.homeContainer}>
+      <title>Rei do Anzol - Competição de Pesca em Porto Velho</title>
       {/* O contêiner pai do carrossel agora tem os cantos arredondados e a sombra */}
       <div className={styles.carouselWrapper}>
         <Carousel 

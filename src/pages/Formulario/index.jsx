@@ -1,16 +1,25 @@
 import { useState } from "react";
 import styles from "./Formulario.module.css";
+import Modal from '../../components/Modal';
 
-// Utilitário para formatar CPF
+// Utilitário para formatar CPF - Versão Corrigida
 const formatCPF = (value) => {
   if (!value) return "";
-  return value
-    .replace(/\D/g, "")
+  const cleaned = value.replace(/\D/g, "");
+  return cleaned
     .replace(/(\d{3})(\d)/, "$1.$2")
     .replace(/(\d{3})(\d)/, "$1.$2")
     .replace(/(\d{3})(\d{1,2})/, "$1-$2")
     .replace(/(-\d{2})\d+?$/, "$1");
 };
+
+// Utilitário para formatar CEP
+const formatCEP = (value) => {
+    if (!value) return "";
+    const cleaned = value.replace(/\D/g, "").slice(0, 8);
+    return cleaned
+        .replace(/(\d{5})(\d)/, "$1-$2");
+}
 
 function FormularioPage() {
   const [formData, setFormData] = useState({
@@ -31,6 +40,8 @@ function FormularioPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -45,8 +56,8 @@ function FormularioPage() {
   };
 
   const handleCEPChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 8);
-    setFormData((prev) => ({ ...prev, cep: value }));
+    const formatted = formatCEP(e.target.value);
+    setFormData((prev) => ({ ...prev, cep: formatted }));
   };
 
   const handleUFChange = (e) => {
@@ -56,8 +67,7 @@ function FormularioPage() {
 
   const handleMembroChange = (index, field, value) => {
     const newMembros = [...formData.membros];
-    newMembros[index][field] =
-      field === "cpf" ? formatCPF(value) : value;
+    newMembros[index][field] = field === "cpf" ? formatCPF(value) : value;
     setFormData((prev) => ({ ...prev, membros: newMembros }));
   };
 
@@ -87,45 +97,53 @@ function FormularioPage() {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:3001/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    // Código desativado para testes. Para ativar, remova os comentários.
+    // try {
+    //   const response = await fetch("http://localhost:3001/api/register", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(formData),
+    //   });
 
-      const data = await response.json();
-      if (data.success) {
-        setSuccessMsg(`✅ Cadastro realizado! Código da equipe: ${data.invite_code}`);
-        setFormData({
-          email: "",
-          password: "",
-          fullName: "",
-          cpf: "",
-          birthdate: "",
-          address: "",
-          city: "",
-          uf: "",
-          cep: "",
-          membros: [{ nome: "", birthdate: "", cpf: "" }],
-        });
-      } else {
-        setErrorMsg(data.error || "Ocorreu um erro desconhecido.");
-      }
-    } catch (err) {
-      setErrorMsg("❌ Falha na conexão: Verifique se o servidor está online.");
-    } finally {
-      setLoading(false);
-    }
+    //   const data = await response.json();
+    //   if (data.success) {
+    //     setSuccessMsg(`✅ Cadastro realizado! Código da equipe: ${data.invite_code}`);
+    //     setIsModalOpen(true);
+    //     setFormData({
+    //       email: "",
+    //       password: "",
+    //       fullName: "",
+    //       cpf: "",
+    //       birthdate: "",
+    //       address: "",
+    //       city: "",
+    //       uf: "",
+    //       cep: "",
+    //       membros: [{ nome: "", birthdate: "", cpf: "" }],
+    //       consent: false,
+    //     });
+    //   } else {
+    //     setErrorMsg(data.error || "Ocorreu um erro desconhecido.");
+    //   }
+    // } catch (err) {
+    //   setErrorMsg("❌ Falha na conexão: Verifique se o servidor está online.");
+    // } finally {
+    //   setLoading(false);
+    // }
+
+    // Simulação de sucesso para testes com o envio desativado
+    setSuccessMsg("✅ Envio de Inscrição será Disponibilizado em breve!");
+    setIsModalOpen(true);
+    setLoading(false);
   };
+
   return (
     <main className={styles.formContainer}>
+      <title>Formulário de Cadastro - Minha Equipe</title>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formHeader}>
           <h1>Criar Conta / Equipe</h1>
-          {/* ✅ Exibição de mensagens de feedback */}
           {errorMsg && <p className={styles.error}>{errorMsg}</p>}
-          {successMsg && <p className={styles.success}>{successMsg}</p>}
         </div>
 
         {/* --- Informações de Acesso --- */}
@@ -240,7 +258,7 @@ function FormularioPage() {
                   name="uf"
                   placeholder="UF"
                   value={formData.uf}
-                  onChange={handleInputChange}
+                  onChange={handleUFChange}
                   required
                   maxLength={2}
                 />
@@ -255,7 +273,7 @@ function FormularioPage() {
                 name="cep"
                 placeholder="CEP"
                 value={formData.cep}
-                onChange={handleInputChange}
+                onChange={handleCEPChange}
                 required
               />
             </div>
@@ -295,7 +313,7 @@ function FormularioPage() {
                     type="text"
                     placeholder="CPF"
                     value={membro.cpf}
-                    onChange={(e) => handleMembroCPFChange(index, e.target.value)}
+                    onChange={(e) => handleMembroChange(index, "cpf", e.target.value)}
                   />
                 </div>
               </div>
@@ -303,12 +321,7 @@ function FormularioPage() {
                 <button
                   type="button"
                   className={styles.memberButton}
-                  onClick={() => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      membros: prev.membros.filter((_, i) => i !== index),
-                    }));
-                  }}
+                  onClick={() => removeMembro(index)}
                 >
                   ❌ Remover
                 </button>
@@ -316,16 +329,7 @@ function FormularioPage() {
             </div>
           ))}
           {formData.membros.length < 3 && (
-            <button
-              type="button"
-              className={styles.memberButton}
-              onClick={() =>
-                setFormData((prev) => ({
-                  ...prev,
-                  membros: [...prev.membros, { nome: "", birthdate: "", cpf: "" }],
-                }))
-              }
-            >
+            <button type="button" className={styles.memberButton} onClick={addMembro}>
               ➕ Adicionar Membro
             </button>
           )}
@@ -349,6 +353,25 @@ function FormularioPage() {
           {loading ? "SALVANDO..." : "FINALIZAR CADASTRO"}
         </button>
       </form>
+
+      {/* --- Modal de sucesso --- */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Cadastro realizado!">
+        <p>{successMsg}</p>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          style={{
+            marginTop: "15px",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "6px",
+            background: "green",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          OK
+        </button>
+      </Modal>
     </main>
   );
 }
