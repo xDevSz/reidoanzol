@@ -1,15 +1,17 @@
+/* src/components/Formulario/Formulario.module.css */
+
 .formContainer {
-  background-color: #f9f9f9;
+  background-color: #f0f2f5; /* Fundo cinza claro como na imagem */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4rem 1.5rem;
+  padding: 2rem 0; /* Padding superior e inferior para um visual mais limpo */
 }
 
 .form {
   background-color: #ffffff;
-  padding: 3rem;
-  border-radius: 12px;
+  padding: 1.5rem; /* Padding interno menor */
+  border-radius: 20px; /* Cantos mais arredondados */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 700px;
@@ -17,65 +19,85 @@
 
 .formHeader {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .formHeader h1 {
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   color: #333;
 }
 
 .formHeader p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #666;
 }
 
 .fieldset {
-  border: none; /* Remove a borda padrão */
-  border-top: 2px solid #f9dd16; /* Linha divisória em AMARELO */
-  padding: 2rem 0 0 0;
-  margin-bottom: 2rem;
+  border: none;
+  padding: 1.5rem 0 0 0;
+  margin-bottom: 1.5rem;
 }
 
 .fieldset legend {
-  padding-right: 1rem;
-  font-weight: 700;
-  font-size: 1.4rem;
-  color: #00a651; /* Legenda em VERDE */
+  padding: 0 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #555;
+  text-align: left; /* Alinha o texto da legenda à esquerda */
 }
 
+/* --- ESTILOS PARA OS CAMPOS DE INPUT COM ÍCONES --- */
 .inputGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Espaçamento entre os grupos */
   display: flex;
   flex-direction: column;
 }
 
 .inputGroup label {
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #444;
+  display: none; /* Esconde a label, já que o placeholder serve como rótulo */
 }
 
-.inputGroup input {
+.inputWithIcon {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9; /* Fundo cinza claro para o campo */
+  border-radius: 12px; /* Cantos arredondados */
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.inputWithIcon:focus-within {
+  box-shadow: 0 0 0 2px #0073a6; /* Efeito de foco em azul */
+  background-color: #ffffff; /* Fundo branco ao focar */
+}
+
+.icon {
+  font-size: 1.2rem;
+  color: #888888; /* Cor cinza para o ícone */
+  margin-right: 0.75rem;
+}
+
+.inputWithIcon input {
   width: 100%;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: none;
+  background-color: transparent; /* Fundo transparente */
   font-size: 1rem;
-  font-family: 'Montserrat', sans-serif; /* Garante que a fonte seja aplicada */
+  color: #333;
+  padding: 0;
 }
 
-.inputGroup input:focus {
-  outline: none;
-  border-color: #0073a6;
-  box-shadow: 0 0 0 3px rgba(0, 115, 166, 0.2);
+.inputWithIcon input::placeholder {
+  color: #aaaaaa; /* Cor mais clara para o placeholder */
+}
+
+.inputWithIcon input:focus {
+  outline: none; /* Remove a borda padrão do foco */
 }
 
 .inputRow {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .inputRow .inputGroup {
@@ -83,9 +105,8 @@
 }
 
 .submitButton {
-  /* Mantendo o mesmo padrão da Home para consistência */
   width: 100%;
-  background-color: #0073a6;
+  background-color: #00a651; /* Cor verde para o botão como na imagem */
   color: white;
   border: none;
   padding: 1.2rem 2.5rem;
@@ -95,11 +116,11 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 115, 166, 0.3);
-  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 166, 81, 0.3);
+  margin-top: 1.5rem;
 }
 
 .submitButton:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 115, 166, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
 }

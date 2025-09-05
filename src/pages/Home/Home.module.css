@@ -4,15 +4,18 @@
 }
 
 .content {
-  max-width: 900px;
+  max-width: 90%;
   margin: 0 auto;
   padding: 3rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .content h1 {
   font-size: 2.8rem;
-  font-weight: 700; /* Usando o peso mais grosso da fonte */
-  color: #00a651; /* Título principal em VERDE */
+  font-weight: 700;
+  color: #00a651;
   margin-bottom: 1rem;
 }
 
@@ -32,21 +35,90 @@
 }
 
 .actionButton {
-  background-color: #0073a6; /* Botões em AZUL */
+  background-color: #0073a6;
   color: white;
-  border: none; /* Borda limpa */
+  border: none;
   padding: 1rem 2.5rem;
-  border-radius: 50px; /* Botões arredondados, mais modernos */
+  border-radius: 50px;
   font-size: 1rem;
-  font-weight: 700; /* Fonte grossa */
+  font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 115, 166, 0.3); /* Sombra azulada */
+  box-shadow: 0 4px 15px rgba(0, 115, 166, 0.3);
 }
 
 .actionButton:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 115, 166, 0.4);
+}
+
+/* Estilos para o Carrossel */
+.carouselWrapper {
+  border-radius: 15px; 
+  overflow: hidden; 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+  position: relative;
+  max-width: 90%; 
+  margin: 2rem auto; 
+}
+
+/* Os seletores a seguir foram reforçados para maior especificidade */
+.carouselWrapper :global(.carousel) :global(.slide) img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+/* --- ESTA É A PARTE MAIS IMPORTANTE DA CORREÇÃO --- */
+.carouselWrapper :global(.carousel) :global(.slide) :global(.legend) {
+  background-color: rgba(0, 0, 0, 0.4); 
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  width: 100%;
+  
+  /* Posicionamento Forçado */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0; /* Remove qualquer margem extra que a biblioteca possa estar aplicando */
+
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); 
+}
+
+/* Oculta os botões de navegação e os indicadores */
+.carouselWrapper :global(.carousel) :global(.control-arrow) {
+    display: none;
+}
+.carouselWrapper :global(.carousel) :global(.control-dots) {
+    display: none;
+}
+
+/* Estilos para o ícone de anzol */
+.iconOverlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+  background-color: #ffc107;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.hookIcon {
+  color: #fff;
+  font-size: 2.5rem;
+  line-height: 1;
 }

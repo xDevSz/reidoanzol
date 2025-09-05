@@ -1,21 +1,36 @@
 // src/components/Navbar/index.jsx
 
+import { useState } from 'react'; // Importa o hook 'useState' para gerenciar o estado
 import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import logo from '../../assets/logo.png'; 
 
 function Navbar() {
+  // 1. Cria um estado para controlar se o menu está aberto ou fechado
+  const [isOpen, setIsOpen] = useState(false);
+
+  // 2. Função que muda o estado quando o botão é clicado
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <nav className={styles.navbar}>
-      {/* 2. Adicione a logo dentro do Link */}
       <Link to="/" className={styles.brand}>
         <img src={logo} alt="Logo Rei do Anzol" className={styles.logo} />
         Rei do Anzol
       </Link>
-      <ul className={styles.navList}>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/sobre">Sobre</Link></li>
-        <li><Link to="/contato">Contato</Link></li>
+      
+      {/* 3. Adiciona o botão do menu hambúrguer */}
+      <button className={styles.hamburger} onClick={toggleMenu}>
+        ☰
+      </button>
+
+      {/* 4. A classe 'active' é adicionada se o estado 'isOpen' for verdadeiro */}
+      <ul className={`${styles.navList} ${isOpen ? styles.active : ''}`}>
+        <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
+        <li><Link to="/sobre" onClick={toggleMenu}>Sobre</Link></li>
+        <li><Link to="/contato" onClick={toggleMenu}>Contato</Link></li>
       </ul>
     </nav>
   );

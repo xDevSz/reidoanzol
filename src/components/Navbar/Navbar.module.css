@@ -1,14 +1,19 @@
+/* Navbar.module.css */
+
 .navbar {
-  background-color: #ffffff; /* Fundo branco */
+  /* Gradiente de fundo */
+  background: linear-gradient(to right, #001f5c, #004d40); /* Ajuste as cores para o gradiente da imagem */
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Sombra sutil para dar elevação */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: sticky; /* Opcional: faz o menu ficar fixo no topo ao rolar */
+  /* Sombra sutil para dar elevação, ajustada para combinar com a imagem */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra um pouco mais pronunciada */
+  position: sticky;
   top: 0;
   z-index: 1000;
+  /* Garante que o texto se destaque no fundo escuro */
+  color: #ffffff; /* Texto branco padrão para o navbar */
 }
 
 .brand {
@@ -17,12 +22,14 @@
   gap: 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333333; /* Cor do texto escura */
+  color: #ffffff; /* Cor do texto da marca agora é branca */
   text-decoration: none;
 }
 
 .logo {
   height: 40px;
+  /* Se a logo for escura, pode ser necessário aplicar um filtro para torná-la clara */
+  /* filter: brightness(0) invert(1); */
 }
 
 .navList {
@@ -34,7 +41,7 @@
 }
 
 .navList a {
-  color: #555555; /* Cor dos links um pouco mais suave */
+  color: #ffffff; /* Cor dos links também branca */
   text-decoration: none;
   font-size: 1rem;
   font-weight: 700;
@@ -44,6 +51,77 @@
 }
 
 .navList a:hover {
-  color: #0073a6; /* Link fica AZUL ao passar o mouse */
-  border-bottom-color: #0073a6; /* Borda inferior aparece ao passar o mouse */
+  color: #a0e6ff; /* Um azul mais claro para o hover, para destacar */
+  border-bottom-color: #a0e6ff; /* Borda inferior aparece ao passar o mouse */
+}
+
+/* Adicionando um estilo para a mensagem "Olá, Alan" se ela for parte do Navbar */
+/* Se "Olá, Alan" não for parte do Navbar, você pode ignorar este estilo ou aplicá-lo a outro componente */
+.welcomeMessage {
+  font-size: 1.8rem; /* Tamanho da fonte maior para "Olá, Alan" */
+  font-weight: 600; /* Peso da fonte */
+  color: #ffffff; /* Cor branca */
+  text-transform: capitalize; /* Garante que a primeira letra seja maiúscula */
+}
+
+.timestamp {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8); /* Um pouco mais transparente para o timestamp */
+}
+
+/* Se houver um ícone de saída, você precisaria de um estilo para ele também */
+.exitIcon {
+    color: #ffffff;
+    font-size: 1.8rem;
+}
+/* Navbar.module.css */
+
+/* ... código CSS existente ... */
+
+/* --- */
+
+/* Responsividade - Media Query para Telas Menores */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+    padding: 1rem;
+    gap: 1rem; /* Adiciona espaçamento entre os itens */
+  }
+  
+  .brand {
+    flex-grow: 1; /* Faz a marca ocupar o espaço disponível e empurrar o menu */
+  }
+
+  /* Esconde a lista de navegação em telas pequenas */
+  .navList {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    gap: 1rem;
+    background-color: #001f5c; /* Cor de fundo para o menu hambúrguer */
+    padding: 1rem 0;
+  }
+  
+  /* Exibe a lista quando a classe 'active' for adicionada */
+  .navList.active {
+    display: flex;
+  }
+
+  /* Cria o botão do menu hambúrguer */
+  .hamburger {
+    display: block; /* Oculto por padrão, mas exibido em telas pequenas */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ffffff;
+  }
+}
+
+/* Esconde o menu hambúrguer em telas maiores */
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
 }
