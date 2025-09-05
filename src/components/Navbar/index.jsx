@@ -28,9 +28,9 @@ function Navbar() {
 
       {/* 4. A classe 'active' é adicionada se o estado 'isOpen' for verdadeiro */}
       <ul className={`${styles.navList} ${isOpen ? styles.active : ''}`}>
-        <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
-        <li><Link to="/sobre" onClick={toggleMenu}>Sobre</Link></li>
-        <li><Link to="/contato" onClick={toggleMenu}>Inscrições</Link></li>
+        <li><Link to="/" className={styles.navButton} onClick={toggleMenu}>Inicio</Link></li>
+        <li><Link to="/sobre" className={styles.navButton} onClick={toggleMenu}>Sobre</Link></li>
+        <li><Link to="/contato" className={`${styles.navButton} ${styles.subscribeButton}`} onClick={toggleMenu}>Inscreva-se</Link></li>
       </ul>
     </nav>
   );

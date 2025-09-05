@@ -2,18 +2,17 @@
 
 .navbar {
   /* Gradiente de fundo */
-  background: linear-gradient(to right, #001f5c, #004d40); /* Ajuste as cores para o gradiente da imagem */
+  background: linear-gradient(to right, #001f5c, #004d40);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Sombra sutil para dar elevação, ajustada para combinar com a imagem */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra um pouco mais pronunciada */
+  /* Sombra sutil para dar elevação */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
   z-index: 1000;
-  /* Garante que o texto se destaque no fundo escuro */
-  color: #ffffff; /* Texto branco padrão para o navbar */
+  color: #ffffff;
 }
 
 .brand {
@@ -22,95 +21,89 @@
   gap: 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff; /* Cor do texto da marca agora é branca */
+  color: #ffffff;
   text-decoration: none;
 }
 
 .logo {
-  height: 40px;
-  /* Se a logo for escura, pode ser necessário aplicar um filtro para torná-la clara */
-  /* filter: brightness(0) invert(1); */
+  height: 10vh;
 }
 
 .navList {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  align-items: center; /* Centraliza os botões verticalmente */
+  gap: 1.5rem; /* Aumenta o espaço entre os botões */
   margin: 0;
   padding: 0;
 }
 
+/* Removemos o estilo antigo de 'a' e criamos um estilo de botão */
 .navList a {
-  color: #ffffff; /* Cor dos links também branca */
-  text-decoration: none;
-  font-size: 1rem;
+    text-decoration: none;
+}
+
+/* NOVO ESTILO PARA OS BOTÕES */
+.navButton {
+  color: #ffffff;
+  background-color: transparent;
+  border: 2px solid #ffffff; /* Borda branca */
+  border-radius: 25px; /* Deixa as bordas bem arredondadas */
+  padding: 8px 16px; /* Espaçamento interno para criar o formato do botão */
   font-weight: 700;
-  padding-bottom: 5px;
-  border-bottom: 2px solid transparent; /* Efeito para o hover */
-  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Transição suave para o efeito hover */
 }
 
-.navList a:hover {
-  color: #a0e6ff; /* Um azul mais claro para o hover, para destacar */
-  border-bottom-color: #a0e6ff; /* Borda inferior aparece ao passar o mouse */
+/* EFEITO AO PASSAR O MOUSE */
+.navButton:hover {
+  background-color: #ffffff;
+  color: #001f5c; /* Cor do texto muda para a cor do fundo */
 }
 
-/* Adicionando um estilo para a mensagem "Olá, Alan" se ela for parte do Navbar */
-/* Se "Olá, Alan" não for parte do Navbar, você pode ignorar este estilo ou aplicá-lo a outro componente */
-.welcomeMessage {
-  font-size: 1.8rem; /* Tamanho da fonte maior para "Olá, Alan" */
-  font-weight: 600; /* Peso da fonte */
-  color: #ffffff; /* Cor branca */
-  text-transform: capitalize; /* Garante que a primeira letra seja maiúscula */
+/* ESTILO DE DESTAQUE PARA O BOTÃO "INSCREVA-SE" */
+.subscribeButton {
+    background-color: #a0e6ff; /* Cor de destaque azul claro */
+    border-color: #a0e6ff; /* Mesma cor para a borda */
+    color: #001f5c; /* Texto escuro para melhor contraste */
 }
 
-.timestamp {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8); /* Um pouco mais transparente para o timestamp */
+.subscribeButton:hover {
+    background-color: #82d8f5; /* Um pouco mais escuro ao passar o mouse */
+    border-color: #82d8f5;
+    color: #001f5c;
 }
 
-/* Se houver um ícone de saída, você precisaria de um estilo para ele também */
-.exitIcon {
-    color: #ffffff;
-    font-size: 1.8rem;
-}
-/* Navbar.module.css */
-
-/* ... código CSS existente ... */
-
-/* --- */
+/* ... O RESTANTE DO SEU CSS PODE CONTINUAR ABAIXO ... */
 
 /* Responsividade - Media Query para Telas Menores */
 @media (max-width: 768px) {
   .navbar {
-    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+    flex-wrap: wrap;
     padding: 1rem;
-    gap: 1rem; /* Adiciona espaçamento entre os itens */
+    gap: 1rem;
   }
   
   .brand {
-    flex-grow: 1; /* Faz a marca ocupar o espaço disponível e empurrar o menu */
+    flex-grow: 1;
   }
 
-  /* Esconde a lista de navegação em telas pequenas */
   .navList {
     display: none;
     flex-direction: column;
     width: 100%;
     text-align: center;
-    gap: 1rem;
-    background-color: #001f5c; /* Cor de fundo para o menu hambúrguer */
-    padding: 1rem 0;
+    gap: 1.5rem; /* Espaçamento para o menu mobile */
+    background-color: #001f5c;
+    padding: 2rem 0;
   }
   
-  /* Exibe a lista quando a classe 'active' for adicionada */
   .navList.active {
     display: flex;
   }
 
-  /* Cria o botão do menu hambúrguer */
   .hamburger {
-    display: block; /* Oculto por padrão, mas exibido em telas pequenas */
+    display: block;
     background: none;
     border: none;
     cursor: pointer;
@@ -119,7 +112,6 @@
   }
 }
 
-/* Esconde o menu hambúrguer em telas maiores */
 @media (min-width: 769px) {
   .hamburger {
     display: none;
