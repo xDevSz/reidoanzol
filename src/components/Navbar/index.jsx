@@ -30,7 +30,7 @@ function Navbar() {
       <ul className={`${styles.navList} ${isOpen ? styles.active : ''}`}>
         <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
         <li><Link to="/sobre" onClick={toggleMenu}>Sobre</Link></li>
-        <li><Link to="/contato" onClick={toggleMenu}>Contato</Link></li>
+        <li><Link to="/contato" onClick={toggleMenu}>Inscrições</Link></li>
       </ul>
     </nav>
   );
